@@ -1,6 +1,16 @@
 #include <iostream>
 
-void resize(char * data, size_t & size, size_t & capacity)
+void reverse(char * res, size_t size)
+{
+  for (size_t i = 0; i < size/2; i++)
+  {
+    char temp = res[i];
+    res[i] = res[size - i - 1];
+    res[size - i - 1] = temp;
+  }
+}
+
+char * resize(char * data, size_t & size, size_t & capacity)
 {
   char * new_data = new char[capacity * 2];
   for (size_t i = 0; i < size; i++)
@@ -8,8 +18,8 @@ void resize(char * data, size_t & size, size_t & capacity)
     new_data[i] = data[i];
   }
   delete[] data;
-  data = new_data;
   capacity *= 2;
+  return new_data;
 }
 
 void fill(char * data, char b, size_t size)
@@ -20,19 +30,18 @@ void fill(char * data, char b, size_t size)
   }
 }
 
-void fillarray(char * res, char * data, size_t & size, size_t b, size_t & capacity)
+char * fillarray(char * res, char * data, size_t & size, size_t b, size_t & capacity)
 {
   if (size + b > capacity)
   {
-    resize(res, size, capacity);
+    res = resize(res, size, capacity);
   }
   for (size_t i = 0; i < b; i++)
   {
     res[size++] = data[i];
   }
-
+  return res;
 }
-
 
 char * createarray(int a)
 {
@@ -53,17 +62,16 @@ int main()
     {
       data = createarray(b);
       fill(data, a, b);
-      fillarray(res, data, size, b, capacity);
+      res = fillarray(res, data, size, b, capacity);
     }
     catch (const std::bad_alloc &)
     {
       delete[] data;
-      delete[] res;
       return 2;
     }
+    delete[] data;
   }
-
-  std::cout << res;
-  delete[] data;
+  reverse(res, size);
+  std::cout << res << '\n';
   delete[] res;
 }
