@@ -21,8 +21,26 @@ void fill(char * data, char b, size_t size)
   }
 }
 
+void fillarray(char * res, char * data, size_t & size, size_t b, size_t & capacity)
+{
+  if (b > capacity)
+  {
+    resize(res, size, capacity);
+  }
+  else
+  {
+    for (size_t i = 0; i < b; i++)
+    {
+      res[size++] = data[i];
+    }
+  }
+}
 
-char * createarray(int a);
+
+char * createarray(int a)
+{
+  return new char[a];
+}
 
 int main()
 {
@@ -31,14 +49,15 @@ int main()
   size_t size;
   size_t capacity;
   char * res = nullptr;
+  char * data = nullptr;
   while (std::cin >> b && std::cin >> a)
   {
-    char * data = createarray(b);
+    data = createarray(b);
     fill(data, a, b);
-    if (size >= capacity)
-    {
-      resize(res, size, capacity);
-    }
-
+    fillarray(res, data, size, b, capacity);
   }
+
+  std::cout << res;
+  delete[] data;
+  delete[] res;
 }
