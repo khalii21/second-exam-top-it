@@ -71,6 +71,10 @@ int main()
     }
     delete[] data;
   }
+  if (!(std::cin.eof()))
+  {
+    return 1;
+  }
   reverse(res, size);
   std::cout << res << '\n';
   delete[] res;
